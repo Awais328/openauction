@@ -40,3 +40,21 @@ func EnforceBidFloors(bids []CoreBid, floors map[string]float64) (eligible []Cor
 
 	return eligibleBids, rejectedIDs
 }
+
+// EnforceBidFloors filters bids based on floor price.
+// Returns eligible bids and IDs of rejected bids.
+// If a bidder has no floor in the map, their bids pass without enforcement.
+func EnforceBidFloor(bids []CoreBid, floor float64) (eligible []CoreBid, rejectedBidIDs []string) {
+	eligibleBids := make([]CoreBid, 0, len(bids))
+	rejectedIDs := make([]string, 0)
+
+	for _, bid := range bids {
+		if BidMeetsFloor(bid.Price, floor) {
+			eligibleBids = append(eligibleBids, bid)
+		} else {
+			rejectedIDs = append(rejectedIDs, bid.ID)
+		}
+	}
+
+	return eligibleBids, rejectedIDs
+}

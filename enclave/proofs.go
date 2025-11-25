@@ -141,7 +141,8 @@ func GenerateAttestation(
 		BidHashes:              bidHashes,
 		RequestHash:            requestHash,
 		AdjustmentFactorsHash:  adjustmentFactorsHash,
-		BidFloors:              req.BidFloors,
+		BidFloor:               req.BidFloor,
+		BidFloors:              req.BidFloors, // TODO(kestutisg): remove to fully transition to single bid floor
 		BidHashNonce:           bidHashNonce,
 		Winner:                 stripBidderName(winner),
 		RunnerUp:               stripBidderName(runnerUp),
