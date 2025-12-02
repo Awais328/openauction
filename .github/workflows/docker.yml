@@ -1,5 +1,6 @@
 name: build docker container image via Github Actions
 on:
+  pull_request:
   workflow_run:
     workflows: ["Go"]
     types: [completed]
@@ -7,8 +8,9 @@ on:
 
 jobs:
   enclave:
-    # Only run if the Go workflow succeeded
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # On workflow_run: only run if Go workflow succeeded
+    # On pull_request: always run
+    if: ${{ github.event_name == 'pull_request' || github.event.workflow_run.conclusion == 'success' }}
     permissions:
       id-token: write # for AWS OIDC authentication
     runs-on: ubuntu-latest
@@ -18,11 +20,13 @@ jobs:
         with:
           go-version: "1.25.1"
       - name: Configure AWS credentials
+        if: github.event_name != 'pull_request'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-ecr-push
           aws-region: us-east-1
       - name: Login to Amazon ECR
+        if: github.event_name != 'pull_request'
         uses: aws-actions/amazon-ecr-login@v2
       - name: go build bin/enclave-linux-amd64
         run: |
@@ -64,9 +68,8 @@ jobs:
           context: .
           file: enclave/Dockerfile
           platforms: linux/amd64
-          # This workflow only runs after the Go workflow succeeds on main,
-          # so we always push the image.
-          push: true
+          # Only push on main (via workflow_run), not on PRs
+          push: ${{ github.event_name != 'pull_request' }}
           sbom: true
           provenance: mode=max
           tags: ${{ steps.dockermetadata.outputs.tags }}
