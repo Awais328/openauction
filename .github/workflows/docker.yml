@@ -1,32 +1,31 @@
 name: build docker container image via Github Actions
 on:
-  pull_request:
   workflow_run:
     workflows: ["Go"]
     types: [completed]
-    branches: [main]
 
 jobs:
   enclave:
-    # On workflow_run: only run if Go workflow succeeded
-    # On pull_request: always run
-    if: ${{ github.event_name == 'pull_request' || github.event.workflow_run.conclusion == 'success' }}
+    # Only run if the Go workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       id-token: write # for AWS OIDC authentication
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
       - uses: actions/setup-go@v5
         with:
           go-version: "1.25.1"
       - name: Configure AWS credentials
-        if: github.event_name != 'pull_request'
+        if: github.event.workflow_run.head_branch == 'main'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-ecr-push
           aws-region: us-east-1
       - name: Login to Amazon ECR
-        if: github.event_name != 'pull_request'
+        if: github.event.workflow_run.head_branch == 'main'
         uses: aws-actions/amazon-ecr-login@v2
       - name: go build bin/enclave-linux-amd64
         run: |
@@ -68,8 +67,8 @@ jobs:
           context: .
           file: enclave/Dockerfile
           platforms: linux/amd64
-          # Only push on main (via workflow_run), not on PRs
-          push: ${{ github.event_name != 'pull_request' }}
+          # Only push on main branch, not on PR branches
+          push: ${{ github.event.workflow_run.head_branch == 'main' }}
           sbom: true
           provenance: mode=max
           tags: ${{ steps.dockermetadata.outputs.tags }}
